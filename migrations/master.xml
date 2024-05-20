@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.21.xsd">
-    <changeSet id="crete_registration" author="Vadim">
-        <sqlFile path="sql/create_user_authorities_tables.sql" relativeToChangelogFile="true"/>
+    <changeSet id="crete_table_profile" author="Vadim">
+        <sqlFile path="sql/create_profile_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 </databaseChangeLog>

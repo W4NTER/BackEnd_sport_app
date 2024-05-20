@@ -9,5 +9,4 @@ public class SportAppAndroidVkrApplication {
     public static void main(String[] args) {
         SpringApplication.run(SportAppAndroidVkrApplication.class, args);
     }
-
 }

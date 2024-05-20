@@ -1,6 +1,7 @@
-package urfu.sport_app_android_vkr.domain.service.jabc;
+package urfu.sport_app_android_vkr.domain.service.jdbc;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import urfu.sport_app_android_vkr.controllers.dto.UserResponse;
 import urfu.sport_app_android_vkr.domain.repository.jdbc.JdbcAuthorityRepository;
 import urfu.sport_app_android_vkr.domain.repository.jdbc.JdbcUsersRepository;
@@ -23,6 +24,7 @@ public class JdbcUsersService implements UsersService {
 
 
     @Override
+    @Transactional
     public void addUser(String username, String password) {
         jdbcUserRepository.addUser(username, password);
         jdbcAuthorityRepository.addAuthority(username, "USER");

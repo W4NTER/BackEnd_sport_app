@@ -4,10 +4,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import urfu.sport_app_android_vkr.domain.repository.UsersRepository;
 import urfu.sport_app_android_vkr.controllers.dto.UserResponse;
+import urfu.sport_app_android_vkr.domain.repository.UsersRepository;
 
-import javax.sql.RowSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -36,16 +35,16 @@ public class JdbcUsersRepository implements UsersRepository {
     @Transactional
     public UserResponse getUser(String username) {
         return jdbcTemplate.queryForObject(
-                "select username, password, enabled, user_id from users where username = ?",
-                (rs, rowNum) -> setUserResponse(rs)
+                "select user_id, username, password, enabled from users where username = ?",
+                (rs, rowNum) -> setUserResponse(rs), username
         );
     }
 
     @Override
     public UserResponse getUser(Long id) {
         return jdbcTemplate.queryForObject(
-                "select username, password, enabled, user_id from users where user_id = ?",
-                (rs, rowNum) -> setUserResponse(rs)
+                "select user_id, username, password, enabled from users where username = ?",
+                (rs, rowNum) -> setUserResponse(rs), id
         );
     }
 
