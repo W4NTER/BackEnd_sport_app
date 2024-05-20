@@ -15,8 +15,8 @@ public class JdbcProfileService implements ProfileService {
     }
 
     @Override
-    public void add(long userId, long height, long weight, String city) {
-        profileRepository.add(userId, height, weight, city);
+    public void add(long userId, long height, long weight, String city, String name, String surname) {
+        profileRepository.add(userId, height, weight, city, name, surname);
     }
 
     @Override

@@ -31,6 +31,11 @@ public class JdbcUsersService implements UsersService {
     }
 
     @Override
+    public void editPassword(Long userId, String password) {
+        jdbcUserRepository.editPassword(userId, password);
+    }
+
+    @Override
     public List<UserResponse> findAll() {
         return jdbcUserRepository.findAll();
     }
