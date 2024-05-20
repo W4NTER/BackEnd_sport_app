@@ -5,6 +5,7 @@ import java.util.List;
 
 public interface UsersRepository {
     void addUser(String username, String password);
+    void editPassword(Long userId, String Password);
     void remove();
     List<UserResponse> findAll();
     UserResponse getUser(String username);

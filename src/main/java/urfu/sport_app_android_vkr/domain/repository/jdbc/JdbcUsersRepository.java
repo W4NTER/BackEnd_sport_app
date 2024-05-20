@@ -33,6 +33,13 @@ public class JdbcUsersRepository implements UsersRepository {
 
     @Override
     @Transactional
+    public void editPassword(Long userId, String password) {
+        jdbcTemplate.update("update users set password = ? where user_id = ?",
+                password, userId);
+    }
+
+    @Override
+    @Transactional
     public UserResponse getUser(String username) {
         return jdbcTemplate.queryForObject(
                 "select user_id, username, password, enabled from users where username = ?",

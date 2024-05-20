@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface UsersService {
     void addUser(String username, String password);
+    void editPassword(Long userId, String password);
     List<UserResponse> findAll();
     UserResponse getUser(String username);
     UserResponse getUser(Long id);
