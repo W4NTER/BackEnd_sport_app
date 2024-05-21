@@ -22,7 +22,7 @@ public class JdbcTeamsRepository implements TeamsRepository {
     @Override
     @Transactional
     public void add(TeamRequest team) {
-        jdbcTemplate.update("insert into teams (sport, count_teammates, team_level, title, description) values (?,?,?,?,?,?)",
+        jdbcTemplate.update("insert into teams (sport, count_teammates, team_level, title, description) values (?,?,?,?,?)",
                 team.sport(), team.count_teammates(), team.team_level(), team.title(), team.description());
     }
 
