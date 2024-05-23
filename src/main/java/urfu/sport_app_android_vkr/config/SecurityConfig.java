@@ -84,6 +84,7 @@ public class SecurityConfig {
                 .logout(logout -> logout.permitAll()
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.setStatus(HttpServletResponse.SC_OK);
+                            LOGGER.info("User logged out");
                         }))
                 .build();
 

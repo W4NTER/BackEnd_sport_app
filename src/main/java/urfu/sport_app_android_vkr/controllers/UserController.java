@@ -6,9 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import urfu.sport_app_android_vkr.domain.dto.response.ProfileResponse;
 import urfu.sport_app_android_vkr.domain.service.ProfileService;
 import urfu.sport_app_android_vkr.domain.service.UsersService;
@@ -29,6 +27,25 @@ public class UserController {
     public ResponseEntity<ProfileResponse> profile() {
         ProfileResponse profile = profileService.getProfile(getUserId()); //не забыть переписать на текущего юзера
         LOGGER.info("Отдал данные");
+        return new ResponseEntity<>(profile, HttpStatus.OK);
+    }
+
+    @PostMapping("/profile")
+    public ResponseEntity<ProfileResponse> addProfileInfo(
+            @RequestParam String name,
+            @RequestParam String surname,
+            @RequestParam String height,
+            @RequestParam String weight,
+            @RequestParam String city
+    ) {
+        try {
+            profileService.add(getUserId(),Integer.parseInt(height), Integer.parseInt(weight), city, name, surname);
+            LOGGER.info("Добавил профиль");
+        } catch (Exception e) {
+            LOGGER.info(e.getMessage());
+            LOGGER.info("неверно введенные данные");
+        }
+        var profile = profileService.getProfile(getUserId());
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
 

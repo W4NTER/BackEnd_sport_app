@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import urfu.sport_app_android_vkr.domain.repository.jdbc.JdbcUsersRepository;
 import urfu.sport_app_android_vkr.domain.service.UsersService;
 
 @RestController
@@ -15,7 +14,7 @@ public class AuthController {
     private final static Logger LOGGER = LogManager.getLogger();
     private final UsersService usersService;
 
-    public AuthController(UsersService usersService, JdbcUsersRepository jdbcUsersRepository) {
+    public AuthController(UsersService usersService) {
         this.usersService = usersService;
     }
 
