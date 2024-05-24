@@ -13,6 +13,7 @@ public record EventResponse(
         OffsetDateTime startTime,
         OffsetDateTime endTime,
         Long price,
-        Long playgroundId
+        Long playgroundId,
+        Long authorId
 ) {
 }

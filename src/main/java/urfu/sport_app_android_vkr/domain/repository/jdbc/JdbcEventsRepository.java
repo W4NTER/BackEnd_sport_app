@@ -24,10 +24,11 @@ public class JdbcEventsRepository implements EventsRepository {
     @Transactional
     public void add(EventRequest event) {
         jdbcTemplate.update("insert into events " +
-                "(title, body, number_of_participants, city, rating, participants_level, start_time, end_time, price, playground_id) " +
-                "values (?,?,?,?,?,?,?,?,?,?)",
+                "(title, body, number_of_participants, city, rating, participants_level," +
+                        " start_time, end_time, price, playground_id, author_id) " +
+                "values (?,?,?,?,?,?,?,?,?,?,?)",
                 event.title(), event.body(), event.numberOfParticipants(), event.city(), event.rating(),
-                event.participantsLevel(), event.startTime(), event.endTime(), event.price(), event.playgroundId());
+                event.participantsLevel(), event.startTime(), event.endTime(), event.price(), event.playgroundId(), event.authorId());
     }
 
     @Override
@@ -48,7 +49,8 @@ public class JdbcEventsRepository implements EventsRepository {
                 "participants_level, " +
                 "start_time, end_time, " +
                 "price, " +
-                "playground_id from events",
+                "playground_id, " +
+                        "author_id from events",
                 (rs, rowNum) -> createResponse(rs));
     }
 
@@ -65,8 +67,31 @@ public class JdbcEventsRepository implements EventsRepository {
                 "start_time, " +
                 "end_time, " +
                 "price, " +
-                "playground_id from events where event_id = ?",
+                "playground_id, " +
+                        "author_id from events where event_id = ?",
                 (rs, rowNum) -> createResponse(rs), eventId);
+    }
+
+    @Override
+    @Transactional
+    public EventResponse editEvent(EventRequest request) {
+        jdbcTemplate.update("update events set " +
+                "title = ?, " +
+                "body = ?, " +
+                "number_of_participants = ?, " +
+                "city = ?, " +
+                "rating = ?, " +
+                "participants_level = ?, " +
+                "start_time = ?, " +
+                "end_time = ?, " +
+                "price = ?, " +
+                "playground_id = ?, " +
+                "author_id = ? " +
+                "where event_id = ?",
+                request.title(), request.body(), request.numberOfParticipants(),
+                request.city(), request.rating(), request.participantsLevel(), request.startTime(),
+                request.endTime(), request.price(), request.playgroundId(), request.authorId(), request.eventId());
+        return getEvent(request.eventId());
     }
 
     private EventResponse createResponse(ResultSet resultSet) throws SQLException {
@@ -85,7 +110,8 @@ public class JdbcEventsRepository implements EventsRepository {
                         .toInstant().atZone(ZoneOffset.systemDefault())
                         .toOffsetDateTime(),
                 resultSet.getLong("price"),
-                resultSet.getLong("playground_id")
+                resultSet.getLong("playground_id"),
+                resultSet.getLong("author_id")
         );
     }
 }

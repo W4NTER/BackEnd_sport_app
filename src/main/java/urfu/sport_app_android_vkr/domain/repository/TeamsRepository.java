@@ -9,6 +9,6 @@ public interface TeamsRepository {
     void add(TeamRequest team);
     void delete(Long teamId);
     TeamResponse getTeam(long team_id);
-    TeamResponse editTeam(TeamRequest team, long teamId);
+    TeamResponse editTeam(TeamRequest team);
     List<TeamResponse> findAll();
 }

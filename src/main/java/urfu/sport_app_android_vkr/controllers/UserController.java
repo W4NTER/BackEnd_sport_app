@@ -25,7 +25,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<ProfileResponse> profile() {
-        ProfileResponse profile = profileService.getProfile(getUserId()); //не забыть переписать на текущего юзера
+        ProfileResponse profile = profileService.getProfile(getUserId());
         LOGGER.info("Отдал данные");
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
@@ -39,7 +39,7 @@ public class UserController {
             @RequestParam String city
     ) {
         try {
-            profileService.add(getUserId(),Integer.parseInt(height), Integer.parseInt(weight), city, name, surname);
+            profileService.addOrEdit(getUserId(),Integer.parseInt(height), Integer.parseInt(weight), city, name, surname);
             LOGGER.info("Добавил профиль");
         } catch (Exception e) {
             LOGGER.info(e.getMessage());

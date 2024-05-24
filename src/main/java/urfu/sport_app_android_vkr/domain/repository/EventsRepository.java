@@ -10,5 +10,6 @@ public interface EventsRepository {
     void delete(long eventId);
     List<EventResponse> findAll();
     EventResponse getEvent(long eventId);
+    EventResponse editEvent(EventRequest request);
 
 }

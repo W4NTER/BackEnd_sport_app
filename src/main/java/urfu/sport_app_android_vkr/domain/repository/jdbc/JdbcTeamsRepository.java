@@ -22,8 +22,8 @@ public class JdbcTeamsRepository implements TeamsRepository {
     @Override
     @Transactional
     public void add(TeamRequest team) {
-        jdbcTemplate.update("insert into teams (sport, count_teammates, team_level, title, description) values (?,?,?,?,?)",
-                team.sport(), team.count_teammates(), team.team_level(), team.title(), team.description());
+        jdbcTemplate.update("insert into teams (sport, count_teammates, team_level, title, description, author_id) values (?,?,?,?,?,?)",
+                team.sport(), team.countTeammates(), team.teamLevel(), team.title(), team.description(), team.authorId());
     }
 
     @Override
@@ -35,26 +35,27 @@ public class JdbcTeamsRepository implements TeamsRepository {
     @Override
     @Transactional
     public TeamResponse getTeam(long teamId) {
-        return jdbcTemplate.queryForObject("select team_id, sport, count_teammates, team_level, title, description" +
+        return jdbcTemplate.queryForObject("select team_id, sport, count_teammates, team_level, title, description, author_id" +
                         " from teams where team_id = ?",
                 (rs, rowNum) -> createResponse(rs), teamId);
     }
 
     @Override
     @Transactional
-    public TeamResponse editTeam(TeamRequest team, long teamId) {
+    public TeamResponse editTeam(TeamRequest team) {
         jdbcTemplate.update("update teams set team_id = ?," +
-                " sport = ?, count_teammates = ?, team_level = ?, title = ?, description = ? where team_id = ?",
-                team.sport(), team.count_teammates(), team.team_level(), team.title(), team.description(), teamId);
-        return getTeam(teamId);
+                " sport = ?, count_teammates = ?, team_level = ?, title = ?, description = ? where team_id = ? and author_id = ?",
+                team.sport(), team.countTeammates(), team.teamLevel(), team.title(), team.description(), team.teamId(), team.authorId());
+        return getTeam(team.teamId());
     }
 
     @Override
     @Transactional
     public List<TeamResponse> findAll() {
-        return jdbcTemplate.query("select team_id, sport, count_teammates, team_level, title, description " +
+        return jdbcTemplate.query("select team_id, sport, count_teammates, team_level, title, description, author_id " +
                 "from teams", (rs, rowNum) -> createResponse(rs));
     }
+
 
     private TeamResponse createResponse(ResultSet resultSet) throws SQLException {
         return new TeamResponse(
@@ -63,7 +64,8 @@ public class JdbcTeamsRepository implements TeamsRepository {
                 resultSet.getLong("count_teammates"),
                 resultSet.getString("team_level"),
                 resultSet.getString("title"),
-                resultSet.getString("description")
+                resultSet.getString("description"),
+                resultSet.getLong("author_id")
         );
     }
 }

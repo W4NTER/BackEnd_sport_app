@@ -6,6 +6,7 @@ public record TeamResponse(
         Long count_teammates,
         String team_level,
         String title,
-        String description
+        String description,
+        Long authorId
 ) {
 }
