@@ -1,9 +1,13 @@
 package urfu.sport_app_android_vkr.domain.service.jdbc;
 
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.stereotype.Service;
+import urfu.sport_app_android_vkr.domain.dto.request.ProfileRequest;
 import urfu.sport_app_android_vkr.domain.dto.response.ProfileResponse;
 import urfu.sport_app_android_vkr.domain.repository.ProfileRepository;
 import urfu.sport_app_android_vkr.domain.service.ProfileService;
+
+import javax.xml.transform.sax.SAXResult;
 
 @Service
 public class JdbcProfileService implements ProfileService {
@@ -15,12 +19,12 @@ public class JdbcProfileService implements ProfileService {
     }
 
     @Override
-    public ProfileResponse addOrEdit(long userId, long height, long weight, String city, String name, String surname) {
-        if (profileRepository.getProfile(userId) != null) {
-            return profileRepository.editProfile(userId, height, weight, city, name, surname);
+    public ProfileResponse addOrEdit(ProfileRequest request) {
+        if (profileRepository.getProfile(request.userId()) != null) {
+            return profileRepository.editProfile(request);
         } else {
-            profileRepository.add(userId, height, weight, city, name, surname);
-            return profileRepository.getProfile(userId);
+            profileRepository.add(request);
+            return profileRepository.getProfile(request.userId());
         }
     }
 

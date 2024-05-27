@@ -18,4 +18,4 @@ public record TeamRequest(
         @JsonProperty("author_id")
         Long authorId
         ) {
-}
+} 

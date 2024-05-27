@@ -4,10 +4,10 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.21.xsd">
-<!--    <changeSet id="edit_profile" author="Vadim">-->
-<!--        <sqlFile path="sql/edit_profile_table.sql" relativeToChangelogFile="true"/>-->
-<!--    </changeSet>-->
-    <changeSet id="edit_events_and_teams" author="Vadim">
-        <sqlFile path="sql/edit_events_and_teams.sql" relativeToChangelogFile="true"/>
+    <changeSet id="edit_profile_1.2" author="Vadim">
+        <sqlFile path="sql/edit_profile_table.sql" relativeToChangelogFile="true"/>
     </changeSet>
+<!--    <changeSet id="edit_events_and_teams" author="Vadim">-->
+<!--        <sqlFile path="sql/edit_events_and_teams.sql" relativeToChangelogFile="true"/>-->
+<!--    </changeSet>-->
 </databaseChangeLog>

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import urfu.sport_app_android_vkr.domain.dto.request.ProfileRequest;
 import urfu.sport_app_android_vkr.domain.dto.response.ProfileResponse;
 import urfu.sport_app_android_vkr.domain.service.ProfileService;
 import urfu.sport_app_android_vkr.domain.service.UsersService;
@@ -36,17 +37,24 @@ public class UserController {
             @RequestParam String surname,
             @RequestParam String height,
             @RequestParam String weight,
-            @RequestParam String city
+            @RequestParam String city,
+            @RequestParam String sex
+
     ) {
+        ProfileResponse profile;
         try {
-            profileService.addOrEdit(getUserId(),Integer.parseInt(height), Integer.parseInt(weight), city, name, surname);
+            ProfileRequest request = new ProfileRequest(
+                    getUserId(), Integer.parseInt(height), Integer.parseInt(weight), city, name, surname, sex);
+            LOGGER.info(request);
+            profile = profileService.addOrEdit(request);
             LOGGER.info("Добавил профиль");
+            return new ResponseEntity<>(profile, HttpStatus.OK);
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
             LOGGER.info("неверно введенные данные");
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        var profile = profileService.getProfile(getUserId());
-        return new ResponseEntity<>(profile, HttpStatus.OK);
     }
 
     private long getUserId() {

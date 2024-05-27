@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import urfu.sport_app_android_vkr.domain.dto.request.ProfileRequest;
 import urfu.sport_app_android_vkr.domain.dto.response.ProfileResponse;
 import urfu.sport_app_android_vkr.domain.repository.ProfileRepository;
 
@@ -22,19 +23,22 @@ public class JdbcProfileRepository implements ProfileRepository {
 
     @Override
     @Transactional
-    public void add(long userId, long height, long weight, String city, String name, String surname) {
-        jdbcTemplate.update("insert into profile (user_id, height, weight, city, name, surname)" +
-                        " values (?,?,?,?,?,?)",
-                userId, height, weight, city, name, surname);
+    public void add(ProfileRequest request) {
+        LOGGER.info("error");
+        jdbcTemplate.update("insert into profile (user_id, height, weight, city, name, surname, sex, image_path)" +
+                        " values (?,?,?,?,?,?,?,?)",
+                request.userId(), request.height(), request.weight(),
+                request.city(), request.name(), request.surname(), request.sex(), null);
+        LOGGER.info("error not here");
     }
 
 
     @Override
     @Transactional
-    public ProfileResponse getProfile(long user_id) {
+    public ProfileResponse getProfile(long userId) {
         return jdbcTemplate.queryForObject(
-                "select user_id, height, weight, city, name, surname from profile where user_id = ?",
-                (rs, rowNum) -> createResponse(rs), user_id);
+                "select user_id, height, weight, city, name, surname, sex, image_path from profile where user_id = ?",
+                (rs, rowNum) -> createResponse(rs), userId);
     }
 
     @Override
@@ -45,10 +49,10 @@ public class JdbcProfileRepository implements ProfileRepository {
 
     @Override
     @Transactional
-    public ProfileResponse editProfile(long userId, long height, long weight, String city, String name, String surname) {
-        jdbcTemplate.update("update profile set height = ?, weight = ?, city = ?, name = ?, surname = ? where user_id = ?",
-                height, weight, city, name, surname, userId);
-        return getProfile(userId);
+    public ProfileResponse editProfile(ProfileRequest request) {
+        jdbcTemplate.update("update profile set height = ?, weight = ?, city = ?, name = ?, surname = ?, sex = ? where user_id = ?",
+                request.height(), request.weight(), request.city(), request.name(), request.surname(), request.sex(), request.userId());
+        return getProfile(request.userId());
     }
 
     private ProfileResponse createResponse(ResultSet resultSet) throws SQLException {
@@ -58,7 +62,9 @@ public class JdbcProfileRepository implements ProfileRepository {
                 resultSet.getLong("weight"),
                 resultSet.getString("city"),
                 resultSet.getString("name"),
-                resultSet.getString("surname")
+                resultSet.getString("surname"),
+                resultSet.getString("sex"),
+                resultSet.getString("image_path")
         );
     }
 }
