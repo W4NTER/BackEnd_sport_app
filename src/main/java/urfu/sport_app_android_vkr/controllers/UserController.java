@@ -9,8 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import urfu.sport_app_android_vkr.domain.dto.request.ProfileRequest;
 import urfu.sport_app_android_vkr.domain.dto.response.ProfileResponse;
-import urfu.sport_app_android_vkr.domain.service.ProfileService;
-import urfu.sport_app_android_vkr.domain.service.UsersService;
+import urfu.sport_app_android_vkr.service.ProfileService;
+import urfu.sport_app_android_vkr.service.UsersService;
 
 @RestController
 @RequestMapping("/user")
@@ -31,7 +31,14 @@ public class UserController {
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
 
-    @PostMapping("/profile")
+    @GetMapping("/profile/{userId}")
+    public ResponseEntity<ProfileResponse> profileById(
+            @PathVariable Long userId
+    ) {
+        return new ResponseEntity<>(profileService.getProfile(userId), HttpStatus.OK);
+    }
+
+    @PostMapping("/profile/add")
     public ResponseEntity<ProfileResponse> addProfileInfo(
             @RequestParam String name,
             @RequestParam String surname,
@@ -41,21 +48,11 @@ public class UserController {
             @RequestParam String sex
 
     ) {
-        ProfileResponse profile;
-        try {
-            ProfileRequest request = new ProfileRequest(
-                    getUserId(), Integer.parseInt(height), Integer.parseInt(weight), city, name, surname, sex);
-            LOGGER.info(request);
-            profile = profileService.addOrEdit(request);
-            LOGGER.info("Добавил профиль");
-            return new ResponseEntity<>(profile, HttpStatus.OK);
-        } catch (Exception e) {
-            LOGGER.info(e.getMessage());
-            LOGGER.info("неверно введенные данные");
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        ProfileRequest request = new ProfileRequest(
+                Long.parseLong(height), Long.parseLong(weight), city, name, surname, sex);
+        return new ResponseEntity<>(profileService.add(request, getUserId()), HttpStatus.OK);
     }
+
 
     private long getUserId() {
         Authentication authentication =

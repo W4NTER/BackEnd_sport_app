@@ -57,7 +57,7 @@ public class JdbcUsersRepository implements UsersRepository {
 
     @Override
     @Transactional
-    public void remove() {
+    public void delete() {
 
     }
 

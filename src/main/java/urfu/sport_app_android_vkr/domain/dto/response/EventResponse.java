@@ -14,6 +14,7 @@ public record EventResponse(
         OffsetDateTime endTime,
         Long price,
         Long playgroundId,
-        Long authorId
+        Long authorId,
+        String sport
 ) {
 }

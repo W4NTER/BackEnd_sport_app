@@ -18,4 +18,9 @@ public class JdbcAuthorityRepository implements AuthoritiesRepository {
         jdbcTemplate.update("insert into authorities (username, authority) values (?, ?)",
                 username, authority);
     }
+
+    @Override
+    public void delete(long userId) {
+//        jdbcTemplate.update("delete from authorities where user_id = ?", userId)
+    }
 }

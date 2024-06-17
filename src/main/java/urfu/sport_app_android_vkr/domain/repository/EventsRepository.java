@@ -6,10 +6,10 @@ import urfu.sport_app_android_vkr.domain.dto.response.EventResponse;
 import java.util.List;
 
 public interface EventsRepository {
-    void add(EventRequest event);
+    Long add(EventRequest event);
     void delete(long eventId);
     List<EventResponse> findAll();
     EventResponse getEvent(long eventId);
-    EventResponse editEvent(EventRequest request);
+    EventResponse editEvent(EventRequest request, long eventId);
 
 }

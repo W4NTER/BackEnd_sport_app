@@ -1,10 +1,10 @@
 package urfu.sport_app_android_vkr.domain.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+
 public record TeamRequest(
-        @JsonProperty("team_id")
-        Long teamId,
         @JsonProperty("sport")
         String sport,
         @JsonProperty("count_teammates")
@@ -14,8 +14,6 @@ public record TeamRequest(
         @JsonProperty("title")
         String title,
         @JsonProperty("description")
-        String description,
-        @JsonProperty("author_id")
-        Long authorId
+        String description
         ) {
 } 

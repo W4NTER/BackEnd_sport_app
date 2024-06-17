@@ -6,9 +6,9 @@ import urfu.sport_app_android_vkr.domain.dto.response.TeamResponse;
 import java.util.List;
 
 public interface TeamsRepository {
-    void add(TeamRequest team);
+    Long add(TeamRequest team, long authorId);
     void delete(Long teamId);
-    TeamResponse getTeam(long team_id);
-    TeamResponse editTeam(TeamRequest team);
+    TeamResponse getTeam(long teamId);
+    TeamResponse editTeam(TeamRequest team, long teamId);
     List<TeamResponse> findAll();
 }

@@ -17,16 +17,20 @@ public class JdbcEventsToUsersRepository implements EventsToUsersRepository {
     }
 
     @Override
-    @Transactional
     public void add(long userId, long eventId) {
         jdbcTemplate.update("insert into events_to_users (user_id, event_id) values (?,?)", userId, eventId);
     }
 
     @Override
-    @Transactional
     public void delete(long userId, long eventId) {
         jdbcTemplate.update("delete from events_to_users where user_id = ? and event_id = ?",
                 userId, eventId);
+    }
+
+    @Override
+    public Long getEventByUserId(long userId) {
+//        return jdbcTemplate.query("select user_id from events_to_users whe");
+        return 1L;
     }
 
     @Override

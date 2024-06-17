@@ -23,13 +23,12 @@ public class JdbcProfileRepository implements ProfileRepository {
 
     @Override
     @Transactional
-    public void add(ProfileRequest request) {
-        LOGGER.info("error");
+    public Long add(ProfileRequest request, long userId) {
         jdbcTemplate.update("insert into profile (user_id, height, weight, city, name, surname, sex, image_path)" +
                         " values (?,?,?,?,?,?,?,?)",
-                request.userId(), request.height(), request.weight(),
+                userId, request.height(), request.weight(),
                 request.city(), request.name(), request.surname(), request.sex(), null);
-        LOGGER.info("error not here");
+        return userId;
     }
 
 
@@ -49,15 +48,16 @@ public class JdbcProfileRepository implements ProfileRepository {
 
     @Override
     @Transactional
-    public ProfileResponse editProfile(ProfileRequest request) {
-        jdbcTemplate.update("update profile set height = ?, weight = ?, city = ?, name = ?, surname = ?, sex = ? where user_id = ?",
-                request.height(), request.weight(), request.city(), request.name(), request.surname(), request.sex(), request.userId());
-        return getProfile(request.userId());
+    public ProfileResponse editProfile(ProfileRequest request, long userId) {
+        jdbcTemplate.update("update profile set height = ?, weight = ?, " +
+                        "city = ?, name = ?, surname = ?, sex = ? where user_id = ?",
+                request.height(), request.weight(), request.city(),
+                request.name(), request.surname(), request.sex(), userId);
+        return getProfile(userId);
     }
 
     private ProfileResponse createResponse(ResultSet resultSet) throws SQLException {
         return new ProfileResponse(
-                resultSet.getLong("user_id"),
                 resultSet.getLong("height"),
                 resultSet.getLong("weight"),
                 resultSet.getString("city"),

@@ -4,8 +4,8 @@ import urfu.sport_app_android_vkr.domain.dto.request.ProfileRequest;
 import urfu.sport_app_android_vkr.domain.dto.response.ProfileResponse;
 
 public interface ProfileRepository {
-    void add(ProfileRequest request);
+    Long add(ProfileRequest request, long userId);
     ProfileResponse getProfile(long userId);
     void delete(Long user_id);
-    ProfileResponse editProfile(ProfileRequest request);
+    ProfileResponse editProfile(ProfileRequest request, long userId);
 }

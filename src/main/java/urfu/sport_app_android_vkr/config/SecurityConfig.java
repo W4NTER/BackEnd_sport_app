@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -57,30 +58,19 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth.requestMatchers(
-                                "/", "/registration").permitAll()
+                                "/", "/registration", "swagger-ui").permitAll()
                         .requestMatchers("/admin").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
-//                                .anyRequest().permitAll()
                 )
 
-                //login
-//                .formLogin(formLogin -> formLogin.loginPage("/login")
-//                        .permitAll())
-//                .httpBasic(Customizer.withDefaults())
-//                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-                .formLogin(login -> login.successHandler(new AuthenticationSuccessHandler() {
-                    @Override
-                    public void onAuthenticationSuccess(HttpServletRequest request,
-                                                        HttpServletResponse response,
-                                                        Authentication authentication)
-                            throws IOException, ServletException {
-                        LOGGER.info("login successful");
-                    }
-                }).permitAll())
+                .formLogin(login -> {
+                    login.successHandler((request, response, authentication) ->
+                            LOGGER.info("login successful")
+                    ).permitAll();
+                    login.failureHandler(((request, response, exception) ->
+                            response.sendError(HttpStatus.UNAUTHORIZED.value())));
+                })
                 .httpBasic(Customizer.withDefaults())
-
-                //logout
-//                .logout(LogoutConfigurer::permitAll)
                 .logout(logout -> logout.permitAll()
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.setStatus(HttpServletResponse.SC_OK);

@@ -1,4 +1,4 @@
-package urfu.sport_app_android_vkr.domain.service;
+package urfu.sport_app_android_vkr.service;
 
 import urfu.sport_app_android_vkr.controllers.dto.UserResponse;
 

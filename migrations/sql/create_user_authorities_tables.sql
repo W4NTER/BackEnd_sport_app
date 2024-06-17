@@ -1,6 +1,6 @@
 create table authorities
 (
-    username  varchar not null ,
+    username varchar not null ,
     authority varchar not null
 );
 

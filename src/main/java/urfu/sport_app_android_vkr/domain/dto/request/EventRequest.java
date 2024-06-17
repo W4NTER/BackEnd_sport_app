@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 public record EventRequest(
-        @JsonProperty("event_id")
-        Long eventId,
         @JsonProperty("title")
         String title,
         @JsonProperty("body")
@@ -28,6 +26,8 @@ public record EventRequest(
         @JsonProperty("playground_id")
         Long playgroundId,
         @JsonProperty("author_id")
-        Long authorId
+        Long authorId,
+        @JsonProperty("sport")
+        String sport
 ) {
 }

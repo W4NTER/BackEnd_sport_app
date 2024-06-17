@@ -7,6 +7,7 @@ import java.util.List;
 public interface EventsToUsersRepository {
     void add(long userId, long eventId);
     void delete(long userId, long eventId);
+    Long getEventByUserId(long userId);
     List<EventResponse> getAllByUser(long userId);
     List<EventResponse> getAllByEvent(long eventID);
 }
