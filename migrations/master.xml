@@ -10,7 +10,7 @@
 <!--    <changeSet id="edit_events_and_teams_1.3" author="Vadim">-->
 <!--        <sqlFile path="sql/edit_events_and_teams.sql" relativeToChangelogFile="true"/>-->
 <!--    </changeSet>-->
-    <changeSet id="edit_events_to_users" author="Vadim">
-        <sqlFile path="sql/edit_table_events_to_users.sql" relativeToChangelogFile="true"/>
+    <changeSet id="edit_teams_to_users" author="Vadim">
+        <sqlFile path="sql/edit_table_teams_to_users.sql" relativeToChangelogFile="true"/>
     </changeSet>
 </databaseChangeLog>

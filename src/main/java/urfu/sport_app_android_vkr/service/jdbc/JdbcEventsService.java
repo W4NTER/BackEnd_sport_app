@@ -32,7 +32,6 @@ public class JdbcEventsService implements EventsService {
     public void subscribe(long userId, long eventId) {
         if (eventsRepository.getEvent(eventId).numberOfParticipants() > 3) {
             throw new IllegalArgumentException();
-
         }
         eventsToUsersRepository.add(userId, eventId);
     }

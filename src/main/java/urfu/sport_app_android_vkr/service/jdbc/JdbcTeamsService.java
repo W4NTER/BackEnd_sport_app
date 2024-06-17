@@ -2,6 +2,8 @@ package urfu.sport_app_android_vkr.service.jdbc;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.relational.core.sql.LockMode;
+import org.springframework.data.relational.repository.Lock;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import urfu.sport_app_android_vkr.domain.dto.request.TeamRequest;
@@ -62,8 +64,12 @@ public class JdbcTeamsService implements TeamsService {
     }
 
     @Override
-    @Transactional
+    @Transactional(timeout = 10)
+    @Lock(LockMode.PESSIMISTIC_WRITE)
     public void subscribe(long userId, long teamId) {
+        if (teamsRepository.getTeam(teamId).count_teammates() > 5) {
+            throw new IllegalArgumentException();
+        }
         teamsToUsersRepository.add(userId, teamId);
     }
 
