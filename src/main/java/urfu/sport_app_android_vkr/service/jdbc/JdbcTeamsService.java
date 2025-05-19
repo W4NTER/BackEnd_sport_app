@@ -67,7 +67,8 @@ public class JdbcTeamsService implements TeamsService {
     @Transactional(timeout = 10)
     @Lock(LockMode.PESSIMISTIC_WRITE)
     public void subscribe(long userId, long teamId) {
-        if (teamsRepository.getTeam(teamId).count_teammates() > 5) {
+        var team = teamsRepository.getTeam(teamId);
+        if (team.count_teammates() > team.maxCountTeammates()) {
             throw new IllegalArgumentException();
         }
         teamsToUsersRepository.add(userId, teamId);

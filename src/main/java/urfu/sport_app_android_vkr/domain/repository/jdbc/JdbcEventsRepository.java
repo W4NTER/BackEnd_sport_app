@@ -33,8 +33,8 @@ public class JdbcEventsRepository implements EventsRepository {
 
         String sql = "insert into events " +
                 "(title, body, number_of_participants, city, rating, participants_level," +
-                        " start_time, end_time, price, playground_id, author_id, sport) " +
-                "values (?,?,?,?,?,?,?,?,?,?,?,?)";
+                        " start_time, end_time, price, playground_id, author_id, sport, max_participants) " +
+                "values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, event.title());
@@ -49,6 +49,7 @@ public class JdbcEventsRepository implements EventsRepository {
             ps.setLong(10, event.playgroundId());
             ps.setLong(11, event.authorId());
             ps.setString(12, event.sport());
+            ps.setLong(13, event.maxParticipants());
             return ps;
         }, keyHolder);
         Long eventId = (Long) keyHolder.getKeys().get("event_id");
@@ -76,7 +77,7 @@ public class JdbcEventsRepository implements EventsRepository {
                 "start_time, end_time, " +
                 "price, " +
                 "playground_id, " +
-                        "author_id, sport from events",
+                        "author_id, sport, max_participants from events",
                 (rs, rowNum) -> createResponse(rs));
     }
 
@@ -93,7 +94,7 @@ public class JdbcEventsRepository implements EventsRepository {
                 "end_time, " +
                 "price, " +
                 "playground_id, " +
-                        "author_id, sport from events where event_id = ?",
+                        "author_id, sport, max_participants from events where event_id = ?",
                 (rs, rowNum) -> createResponse(rs), eventId);
     }
 
@@ -112,11 +113,11 @@ public class JdbcEventsRepository implements EventsRepository {
                 "price = ?, " +
                 "playground_id = ?, " +
                 "author_id = ?, " +
-                        "sport = ? " +
+                        "sport = ?, max_participants = ? " +
                 "where event_id = ?",
                 request.title(), request.body(), request.numberOfParticipants(),
                 request.city(), request.rating(), request.participantsLevel(), request.startTime(),
-                request.endTime(), request.price(), request.playgroundId(), request.authorId(), eventId);
+                request.endTime(), request.price(), request.playgroundId(), request.authorId(), request.maxParticipants(), eventId);
         return getEvent(eventId);
     }
 
@@ -138,7 +139,8 @@ public class JdbcEventsRepository implements EventsRepository {
                 resultSet.getLong("price"),
                 resultSet.getLong("playground_id"),
                 resultSet.getLong("author_id"),
-                resultSet.getString("sport")
+                resultSet.getString("sport"),
+                resultSet.getLong("max_participants")
         );
     }
 }

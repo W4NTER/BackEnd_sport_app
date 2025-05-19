@@ -30,7 +30,8 @@ public class JdbcEventsService implements EventsService {
     @Transactional(timeout = 10)
     @Lock(LockMode.PESSIMISTIC_WRITE)
     public void subscribe(long userId, long eventId) {
-        if (eventsRepository.getEvent(eventId).numberOfParticipants() > 3) {
+        var event = eventsRepository.getEvent(eventId);
+        if (event.numberOfParticipants() > event.maxParticipants()) {
             throw new IllegalArgumentException();
         }
         eventsToUsersRepository.add(userId, eventId);

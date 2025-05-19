@@ -28,6 +28,8 @@ public record EventRequest(
         @JsonProperty("author_id")
         Long authorId,
         @JsonProperty("sport")
-        String sport
+        String sport,
+        @JsonProperty("max_participants")
+        Long maxParticipants
 ) {
 }

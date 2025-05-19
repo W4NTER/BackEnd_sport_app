@@ -7,6 +7,7 @@ public record TeamResponse(
         String team_level,
         String title,
         String description,
-        Long authorId
+        Long authorId,
+        Long maxCountTeammates
 ) {
 }

@@ -29,7 +29,7 @@ public class JdbcTeamsRepository implements TeamsRepository {
     @Override
     public Long add(TeamRequest team, long authorId) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        String sql = "insert into teams (sport, count_teammates, team_level, title, description, author_id) values (?,?,?,?,?,?)";
+        String sql = "insert into teams (sport, count_teammates, team_level, title, description, author_id, max_count_teammates) values (?,?,?,?,?,?,?)";
 
         jdbcTemplate.update(connection -> {
                     PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -39,6 +39,7 @@ public class JdbcTeamsRepository implements TeamsRepository {
                     ps.setString(4, team.title());
                     ps.setString(5, team.description());
                     ps.setLong(6, authorId);
+                    ps.setLong(7, team.maxCountTeammates());
                     return ps;
         }, keyHolder);
         LOGGER.info("team_id = " + keyHolder.getKeys().get("team_id"));
@@ -52,7 +53,7 @@ public class JdbcTeamsRepository implements TeamsRepository {
 
     @Override
     public TeamResponse getTeam(long teamId) {
-        return jdbcTemplate.queryForObject("select team_id, sport, count_teammates, team_level, title, description, author_id" +
+        return jdbcTemplate.queryForObject("select team_id, sport, count_teammates, team_level, title, description, author_id, max_count_teammates" +
                         " from teams where team_id = ?",
                 (rs, rowNum) -> createResponse(rs), teamId);
     }
@@ -61,14 +62,14 @@ public class JdbcTeamsRepository implements TeamsRepository {
     public TeamResponse editTeam(TeamRequest team, long teamId) {
         LOGGER.info("update");
         jdbcTemplate.update("update teams set" +
-                " sport = ?, count_teammates = ?, team_level = ?, title = ?, description = ? where team_id = ?",
+                " sport = ?, count_teammates = ?, team_level = ?, title = ?, description = ?, max_count_teammates = ? where team_id = ?",
                 team.sport(), team.countTeammates(), team.teamLevel(), team.title(), team.description(), teamId);
         return getTeam(teamId);
     }
 
     @Override
     public List<TeamResponse> findAll() {
-        return jdbcTemplate.query("select team_id, sport, count_teammates, team_level, title, description, author_id " +
+        return jdbcTemplate.query("select team_id, sport, count_teammates, team_level, title, description, author_id, max_count_teammates " +
                 "from teams", (rs, rowNum) -> createResponse(rs));
     }
 
@@ -81,7 +82,8 @@ public class JdbcTeamsRepository implements TeamsRepository {
                 resultSet.getString("team_level"),
                 resultSet.getString("title"),
                 resultSet.getString("description"),
-                resultSet.getLong("author_id")
+                resultSet.getLong("author_id"),
+                resultSet.getLong("max_count_teammates")
         );
     }
 }

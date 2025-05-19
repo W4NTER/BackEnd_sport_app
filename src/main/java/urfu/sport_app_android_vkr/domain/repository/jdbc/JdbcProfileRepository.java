@@ -22,7 +22,6 @@ public class JdbcProfileRepository implements ProfileRepository {
     }
 
     @Override
-    @Transactional
     public Long add(ProfileRequest request, long userId) {
         jdbcTemplate.update("insert into profile (user_id, height, weight, city, name, surname, sex, image_path)" +
                         " values (?,?,?,?,?,?,?,?)",
@@ -33,7 +32,6 @@ public class JdbcProfileRepository implements ProfileRepository {
 
 
     @Override
-    @Transactional
     public ProfileResponse getProfile(long userId) {
         return jdbcTemplate.queryForObject(
                 "select user_id, height, weight, city, name, surname, sex, image_path from profile where user_id = ?",
@@ -41,13 +39,11 @@ public class JdbcProfileRepository implements ProfileRepository {
     }
 
     @Override
-    @Transactional
     public void delete(Long user_id) {
 
     }
 
     @Override
-    @Transactional
     public ProfileResponse editProfile(ProfileRequest request, long userId) {
         jdbcTemplate.update("update profile set height = ?, weight = ?, " +
                         "city = ?, name = ?, surname = ?, sex = ? where user_id = ?",

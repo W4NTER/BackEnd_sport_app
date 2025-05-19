@@ -14,6 +14,8 @@ public record TeamRequest(
         @JsonProperty("title")
         String title,
         @JsonProperty("description")
-        String description
+        String description,
+        @JsonProperty("max_count_teammates")
+        Long maxCountTeammates
         ) {
 } 

@@ -15,6 +15,7 @@ public record EventResponse(
         Long price,
         Long playgroundId,
         Long authorId,
-        String sport
+        String sport,
+        Long maxParticipants
 ) {
 }
