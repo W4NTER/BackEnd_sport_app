@@ -6,12 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import urfu.sport_app_android_vkr.domain.dto.request.ProfileRequest;
 import urfu.sport_app_android_vkr.domain.dto.response.ProfileResponse;
-import urfu.sport_app_android_vkr.domain.service.ProfileService;
-import urfu.sport_app_android_vkr.domain.service.UsersService;
+import urfu.sport_app_android_vkr.service.ProfileService;
+import urfu.sport_app_android_vkr.service.UsersService;
 
 @RestController
 @RequestMapping("/user")
@@ -27,10 +26,33 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<ProfileResponse> profile() {
-        ProfileResponse profile = profileService.getProfile(getUserId()); //не забыть переписать на текущего юзера
+        ProfileResponse profile = profileService.getProfile(getUserId());
         LOGGER.info("Отдал данные");
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
+
+    @GetMapping("/profile/{userId}")
+    public ResponseEntity<ProfileResponse> profileById(
+            @PathVariable Long userId
+    ) {
+        return new ResponseEntity<>(profileService.getProfile(userId), HttpStatus.OK);
+    }
+
+    @PostMapping("/profile/add")
+    public ResponseEntity<ProfileResponse> addProfileInfo(
+            @RequestParam String name,
+            @RequestParam String surname,
+            @RequestParam String height,
+            @RequestParam String weight,
+            @RequestParam String city,
+            @RequestParam String sex
+
+    ) {
+        ProfileRequest request = new ProfileRequest(
+                Long.parseLong(height), Long.parseLong(weight), city, name, surname, sex);
+        return new ResponseEntity<>(profileService.add(request, getUserId()), HttpStatus.OK);
+    }
+
 
     private long getUserId() {
         Authentication authentication =

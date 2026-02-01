@@ -1,0 +1,1 @@
+alter table playgrounds alter column rating type float;
